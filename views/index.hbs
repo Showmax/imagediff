@@ -1,0 +1,64 @@
+<html>
+<head>
+    <title>ImageDiff Viewer</title>
+    <link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+    <link rel="stylesheet" href="/styles/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/styles/bootstrap-theme.css" type="text/css"/>
+    <script src="/scripts/index.js" type="text/javascript"></script>
+    <script src="/scripts/zooming.js" type="text/javascript"></script>
+    <script src="/scripts/jquery.js" type="text/javascript"></script>
+    <script src="/scripts/bootstrap.js" type="text/javascript"></script>
+</head>
+<body>
+
+<nav id="header" class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header" style="min-height: 65px">
+            <a class="navbar-brand">Inspect changes and perform desired actions. Once you're done, be sure to
+                <button class="btn btn-warning" onclick="stopConsole();">Stop the console</button>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div id="consoleStopped" class="alert alert-success" style="display: none">
+    The console has been stopped. Please close this window.
+</div>
+
+<div id="main" class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            General Configuration
+        </div>
+        <div class="panel-body">
+            <dl>
+                <dd>Baseline images: {{properties.baselineDir}}</dd>
+                <dd>Captured images: {{properties.capturedDir}}</dd>
+                <dd>Results: {{properties.resultsDir}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    {{#each diffs}}
+        <div class="panel panel-default panel-small">
+            <div class="panel-heading">
+                <button class="btn btn-danger" onclick="baselineCaptured('{{fileName}}');"
+                        title="Use the captured image (the last one) as the new baseline">
+                    Baseline
+                </button>
+                <button class="btn" onclick="discardCaptured('{{fileName}}');"
+                        title="Skip it, I will fix the difference">
+                    Skip
+                </button>
+                <div style="margin-top: 1em;">Image: <strong>{{fileName}}</strong></div>
+            </div>
+            <div class="panel-body">
+                <img src="/diffs/{{fileName}}" data-action="zoom" data-original="/diffs/{{fileName}}"
+                     title="Diff image is created from 3 images: baseline (first), captured (last), difference (middle, changes are highlighted)"/>
+            </div>
+        </div>
+    {{/each}}
+</div>
+
+</body>
+</html>
