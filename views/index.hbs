@@ -4,10 +4,12 @@
     <link rel="stylesheet" href="/styles/main.css" type="text/css"/>
     <link rel="stylesheet" href="/styles/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="/styles/bootstrap-theme.css" type="text/css"/>
-    <script src="/scripts/index.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/styles/jquery.selectareas.css" type="text/css"/>
     <script src="/scripts/zooming.js" type="text/javascript"></script>
     <script src="/scripts/jquery.js" type="text/javascript"></script>
     <script src="/scripts/bootstrap.js" type="text/javascript"></script>
+    <script src="/scripts/jquery.selectareas.js" type="text/javascript"></script>
+    <script src="/scripts/index.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -21,43 +23,82 @@
     </div>
 </nav>
 
-<div id="consoleStopped" class="alert alert-success" style="display: none">
+<div id="consoleStopped" class="alert alert-success">
     The console has been stopped. Please close this window.
 </div>
 
-<div id="main" class="container-fluid">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            General Configuration
-        </div>
-        <div class="panel-body">
-            <dl>
-                <dd>Baseline images: {{properties.baselineDir}}</dd>
-                <dd>Captured images: {{properties.capturedDir}}</dd>
-                <dd>Results: {{properties.resultsDir}}</dd>
-            </dl>
+<div id="actionSuccessful" class="alert popup alert-success">
+    Action succcessful!
+</div>
+
+<div id="actionFailed" class="alert popup alert-danger">
+    Action failed!
+</div>
+
+<div id="excludeDialog" class="modal" role="dialog">
+    <div class="modal-dialog modal-huge">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Select regions you want to exclude</h4>
+            </div>
+            <div id="excludeImageContainer" class="modal-body">
+                <!--img-->
+            </div>
+            <div class="modal-footer">
+                <button id="saveExcludes" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+            </div>
         </div>
     </div>
+</div>
 
-    {{#each diffs}}
-        <div class="panel panel-default panel-small">
+<div id="main" class="container-fluid">
+{{#each results}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Results for dir: {{properties.resultsDir}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl>
+            <dd>Baseline images: {{properties.baselineDir}}</dd>
+            <dd>Captured images: {{properties.capturedDir}}</dd>
+        </dl>
+        <br/>
+        {{#each diffs}}
+        <div class="panel panel-default panel-small" style="vertical-align: top !important;">
             <div class="panel-heading">
-                <button class="btn btn-danger" onclick="baselineCaptured('{{fileName}}');"
+                <button class="btn btn-danger" onclick="baselineCaptured('{{../id}}', '{{fileName}}');"
                         title="Use the captured image (the last one) as the new baseline">
                     Baseline
                 </button>
-                <button class="btn" onclick="discardCaptured('{{fileName}}');"
+                <button class="btn btn-success openExcludeDialog" data-toggle="modal" data-target="#excludeDialog"
+                        data-file="{{fileName}}" data-id="{{../id}}"
+                        title="Open the captured image and select regions you want to exclude from comparison">
+                    Exclude regions
+                </button>
+                <button class="btn" onclick="discardCaptured('{{../id}}', '{{fileName}}');"
                         title="Skip it, I will fix the difference">
                     Skip
                 </button>
                 <div style="margin-top: 1em;">Image: <strong>{{fileName}}</strong></div>
+                {{#unless code}}
+                <div style="margin-top: 1em;"><i>This image doesn't have any baseline!</i></div>
+                {{/unless}}
             </div>
             <div class="panel-body">
-                <img src="/diffs/{{fileName}}" data-action="zoom" data-original="/diffs/{{fileName}}"
+                {{#if code}}
+                <img src="/diffs/{{../id}}/{{fileName}}" data-action="zoom" data-original="/diffs/{{../id}}/{{fileName}}"
                      title="Diff image is created from 3 images: baseline (first), captured (last), difference (middle, changes are highlighted)"/>
+                {{else}}
+                <img src="/captured/{{../id}}/{{fileName}}" data-action="zoom" data-original="/captured/{{../id}}/{{fileName}}"
+                     title="Captured image only. Comparison to baseline could not be performed."/>
+                {{/if}}
             </div>
         </div>
-    {{/each}}
+        {{/each}}
+    </div>
+</div>
+{{/each}}
 </div>
 
 </body>

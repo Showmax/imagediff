@@ -10,16 +10,25 @@
 
 .panel-small {
     display: inline-block;
-    max-width: 20em;
-    margin-right: 1em;
-}
-
-.panel-medium {
-    display: inline-block;
-    max-width: 40em;
+    max-width: 22em;
     margin-right: 1em;
 }
 
 dl {
     margin-bottom: 0 !important;
+}
+
+.modal-huge {
+    min-width: 75%;
+}
+
+.modal-body {
+    overflow: auto;
+}
+
+.alert.popup {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    width: 50em;
 }
