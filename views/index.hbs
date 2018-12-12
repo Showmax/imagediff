@@ -13,15 +13,11 @@
 </head>
 <body>
 
-<nav id="header" class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header" style="min-height: 65px">
-            <a class="navbar-brand">Inspect changes and perform desired actions. Once you're done, be sure to
-                <button class="btn btn-warning" onclick="stopConsole();">Stop the console</button>
-            </a>
-        </div>
-    </div>
-</nav>
+<div id="header" class="card" style="margin: 15px">
+  <div class="card-body">
+      Inspect changes and perform desired actions. Once you're done, be sure to <button class="btn btn-warning" onclick="stopConsole();">Stop the console</button>
+  </div>
+</div>
 
 <div id="consoleStopped" class="alert alert-success">
     The console has been stopped. Please close this window.
@@ -36,11 +32,11 @@
 </div>
 
 <div id="excludeDialog" class="modal" role="dialog">
-    <div class="modal-dialog modal-huge">
-        <div class="modal-content">
+    <div class="modal-dialog modal-huge" style="min-width: 90%;">
+        <div class="modal-content" style="width: 100%; height: 95%;">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Select regions you want to exclude</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div id="excludeImageContainer" class="modal-body">
                 <!--img-->
@@ -54,19 +50,19 @@
 
 <div id="main" class="container-fluid">
 {{#each results}}
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card">
+    <div class="card-header">
         <strong>Results for dir: {{properties.resultsDir}}</strong>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <dl>
             <dd>Baseline images: {{properties.baselineDir}}</dd>
             <dd>Captured images: {{properties.capturedDir}}</dd>
         </dl>
         <br/>
         {{#each diffs}}
-        <div class="panel panel-default panel-small" style="vertical-align: top !important;">
-            <div class="panel-heading">
+        <div class="card" style="vertical-align: top !important; width: 22rem; display: inline-block;">
+            <div class="card-header">
                 <button class="btn btn-danger" onclick="baselineCaptured('{{../id}}', '{{fileName}}');"
                         title="Use the captured image (the last one) as the new baseline">
                     Baseline
@@ -85,13 +81,15 @@
                 <div style="margin-top: 1em;"><i>This image doesn't have any baseline!</i></div>
                 {{/unless}}
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 {{#if code}}
                 <img src="/diffs/{{../id}}/{{fileName}}" data-action="zoom" data-original="/diffs/{{../id}}/{{fileName}}"
-                     title="Diff image is created from 3 images: baseline (first), captured (last), difference (middle, changes are highlighted)"/>
+                     title="Diff image is created from 3 images: baseline (first), captured (last), difference (middle, changes are highlighted)"
+                     style="width: 100%"/>
                 {{else}}
                 <img src="/captured/{{../id}}/{{fileName}}" data-action="zoom" data-original="/captured/{{../id}}/{{fileName}}"
-                     title="Captured image only. Comparison to baseline could not be performed."/>
+                     title="Captured image only. Comparison to baseline could not be performed."
+                     style="width: 100%"/>
                 {{/if}}
             </div>
         </div>
